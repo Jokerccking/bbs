@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <title>{% block title %}Title{% endblock %} - My WebPage</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    {% endblock %}
+</head>
+<body>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="footer" class="text-center">
+        {% block footer %}
+        <small>&copy; Copyright 2017 by <a href="">Roy</a></small>
+        {% endblock %}
+    </div>
+    <script>
+        {% block script %}{% endblock %}
+    </script>
+</body>
+</html>

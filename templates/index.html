@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+{% block title %}Index Page{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Welcome to The Index Page!</h1>
+<h3>{{ um }}</h3>
+<div class="pull-right">
+    <a href="{{ url_for('.login') }}">登陆</a>
+    <a href="{{ url_for('.register') }}">注册</a>
+    <a href="{{ url_for('.logout') }}">退出</a>
+</div>
+
+<img src="{{ url_for('static.img', file='doge.gif') }}">
+<img src="{{ url_for('static.img', file='doge1.jpg') }}">
+<img src="{{ url_for('static.img', file='doge2.gif') }}">
+<h3>App List:</h3>
+<a href="/topic">Topic</a><br>
+{% endblock %}
