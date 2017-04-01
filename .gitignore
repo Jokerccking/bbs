@@ -1,6 +1,6 @@
-data
-.idea
-config.py
+data/
+.idea/
+config/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

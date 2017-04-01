@@ -1,43 +1,57 @@
 {% extends "topic/basic.html" %}
 {% block title %}BBS Page{% endblock %}
 {% block head %}
-    {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 <h1>Welcome to The BBS Page!</h1>
 <div id="main">
-        <div id="sidebar">
-            <div class="panel">
-                <div class="inner">
-                    <a href="/topic/new" class="create_topic_btn">
-                        <span class="span-success">发布话题</span>
-                    </a>
-                </div>
+    <div id="sidebar">
+        <div class="panel">
+            <div class="inner">
+                <a href="/topic/new" class="create_topic_btn">
+                    <span class="span-success">发布话题</span>
+                </a>
             </div>
         </div>
-        <div id="content">
-            <div class="panel">
-                <div class="inner post">
-                    <div class="topic_list">
-                        {% for t in ts %}
-                        <div class="cell">
-                            <div class="topic_title_wrapper">
-                                <a class="topic_title" href="{{ url_for('.detail', tid=t.id) }}">
-                                    {{ t.title }}
-                                </a>
-                                <span>{{ t.replies() | count }} / {{ t.view_times }}</span>
-                            </div>
+    </div>
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                <a href="/topic"
+                   class="topic-tab current-tab">
+                    全部
+                </a>
+
+                {% for b in bs %}
+                <a href="{{ url_for('.ball', bid=b.id) }}"
+                   class="topic-tab current-tab">
+                    {{ b.name }}
+                </a>
+                {% endfor %}
+            </div>
+            <div class="inner post">
+                <div class="topic_list">
+                    {% for t in ts %}
+                    <div class="cell">
+                        <div class="topic_title_wrapper">
+                            <a class="topic_title" href="{{ url_for('.detail', tid=t.id) }}">
+                                {{ t.title }}
+                            </a>
+                            <a class="pull-right" href="{{ url_for('.delete',tid=t.id, token=token) }}">delete</a>
+                            <span class="pull-right">{{ t.replies() | count }} / {{ t.view_times }}</span>
                         </div>
-                        {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
 </div>
-{% endblock %}
-{% block script %}
-  (function () {
+    {% endblock %}
+    {% block script %}
+    (function () {
     var editor = new Editor();
     editor.render($('.editor')[0]);
-  })();
-{% endblock %}
+    })();
+    {% endblock %}

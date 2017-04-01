@@ -1,0 +1,17 @@
+{% extends "basic.html" %}
+{% block title %}Board Page{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Welcome to The Board Page!</h1>
+    <h3>All the Boards:</h3>
+    {% for b in bs %}
+        <a href="">{{ b.name }}</a><br>
+    {% endfor %}
+    <form action="/board/add" method="post">
+        <input name="name" placeholder="board name">
+        <br>
+        <button>board add</button>
+    </form>
+{% endblock %}

@@ -11,9 +11,19 @@ class Topic(Model):
         t.save()
         return t
 
+    @classmethod
+    def get_all(cls, bid):
+        tps = []
+        ms = cls.all()
+        for m in ms:
+            if m.bid == bid:
+                tps.append(m)
+        return tps
+
     def __init__(self, form):
         self.id = form.get('id')
         self.uid = int(form.get('uid'))
+        self.bid = int(form.get('bid'))
         self.view_times = int(form.get('view_times', 0))
         self.title = form.get('title', '')
         self.content = form.get('content', '')

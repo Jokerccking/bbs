@@ -55,6 +55,8 @@ from flask import session
 
 from models.user import User
 
+csrf_token = dict()
+
 
 def current_user():
     uid = session.get('uid', -1)
