@@ -19,7 +19,7 @@ main = Blueprint('topic', __name__)
 def index():
     u = current_user()
     if u is None:
-        return redirect(url_for('user.login'))
+        return redirect(url_for('index.login'))
     token = str(uuid.uuid4())
     csrf_token[token] = u.id
     bs = Board.all()

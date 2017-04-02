@@ -17,9 +17,9 @@ application = app.app
 # 这是把代码部署到 apache gunicorn nginx 后面的套路
 """
 建立一个软连接
-ln -s ~/myproject/bbs/supervisor.conf /etc/supervisor/conf.d/bbs.conf
+sudo ln -s ~/myproject/bbs/config/supervisor.conf /etc/supervisor/conf.d/bbs.conf
 
-ln -s ~/myproject/bbs/nginx.conf /etc/nginx/sites-enabled/bbs.conf
+sudo ln -s ~/myproject/bbs/config/nginx.conf /etc/nginx/sites-enabled/bbs.conf
 
 
 
