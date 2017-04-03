@@ -17,7 +17,7 @@ main = Blueprint('board', __name__)
 def index():
     u = current_user()
     if u is None or u.role != 1:
-        return redirect(url_for('topic.index'))
+        abort(403)
     token = str(uuid.uuid4())
     csrf_tokens[token] = u.id
     bs = Board.all()
@@ -31,7 +31,7 @@ def add():
         return redirect(url_for('topic.index'))
     form = request.form.copy()
     Board.new(form)
-    return redirect(url_for('topic.index'))
+    return redirect(url_for('.index'))
 
 
 @main.route('/delete/<int:bid>/<token>')
