@@ -55,7 +55,7 @@ from flask import session
 
 from models.user import User
 
-csrf_token = dict()
+csrf_tokens = dict()
 
 
 def current_user():

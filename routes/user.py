@@ -84,5 +84,8 @@ def register():
 
 @main.route('/logout')
 def logout():
+    u = current_user()
+    if u is None:
+        return redirect('.index')
     session.pop('uid')
     return redirect(url_for('.index'))

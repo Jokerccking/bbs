@@ -19,13 +19,13 @@
                     </span>
                     <span>
                         作者
-                        <a href="/user/hopperhuang">hopperhuang</a>
+                        <a href="">{{ user.username }}</a>
         	        </span>
                     <span>
                         {{ topic.view_times }} 次浏览
                     </span>
                     <span>
-                        来自 问答
+                        来自 <a href="{{ url_for('topic.ball', bid=board.id) }}">{{ board.name }}</a>
                     </span>
                 </div>
             </div>

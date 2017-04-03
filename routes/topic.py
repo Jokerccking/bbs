@@ -10,7 +10,7 @@ from flask import url_for
 from models.board import Board
 from models.topic import Topic
 from models.user import User
-from routes import current_user, csrf_token
+from routes import current_user, csrf_tokens
 
 main = Blueprint('topic', __name__)
 
@@ -21,7 +21,7 @@ def index():
     if u is None:
         return redirect(url_for('index.login'))
     token = str(uuid.uuid4())
-    csrf_token[token] = u.id
+    csrf_tokens[token] = u.id
     bs = Board.all()
     ts = Topic.all()
     return render_template('topic/index.html', ts=ts, bs=bs, token=token)
@@ -29,16 +29,22 @@ def index():
 
 @main.route('/ball/<int:bid>')
 def ball(bid):
+    u = current_user()
+    if u is None:
+        return redirect(url_for('index.login'))
+    token = str(uuid.uuid4())
+    csrf_tokens[token] = u.id
     bs = Board.all()
     ts = Topic.get_all(bid)
-    return render_template('topic/index.html', ts=ts, bs=bs)
+    return render_template('topic/index.html', ts=ts, bs=bs, token=token)
 
 
 @main.route('/detail/<int:tid>')
 def detail(tid):
     t = Topic.get(tid)
     u = User.find(t.uid)
-    return render_template('topic/topic.html', topic=t, user=u)
+    b = Board.find(t.bid)
+    return render_template('topic/topic.html', topic=t, user=u, board=b)
 
 
 @main.route('/new')
@@ -60,9 +66,13 @@ def add():
 # TODO: CSRF攻击，加入csrf - token验证
 def delete(tid, token):
     u = current_user()
-    if u is not None and csrf_token[token] == u.id:
-        csrf_token.pop(token)
-        Topic.pop(tid)
-        return redirect(url_for('.index'))
+    if u is not None and csrf_tokens.get(token) == u.id:
+        csrf_tokens.pop(token)
+        topic = Topic.find(tid)
+        if u.id == topic.uid or u.role == 1:
+            Topic.pop(tid)
+            return redirect(url_for('.index'))
+        else:
+            abort(403)
     else:
         abort(403)

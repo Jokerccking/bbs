@@ -7,7 +7,8 @@
     <h1>Welcome to The Board Page!</h1>
     <h3>All the Boards:</h3>
     {% for b in bs %}
-        <a href="">{{ b.name }}</a><br>
+        <a href="">{{ b.name }}</a>
+        <a class="pull-right" href="{{ url_for('.delete', bid=b.id, token=token) }}">删除</a><br>
     {% endfor %}
     <form action="/board/add" method="post">
         <input name="name" placeholder="board name">
