@@ -5,11 +5,18 @@
 {% endblock %}
 {% block content %}
 <h1>Welcome to The Index Page!</h1>
-<h3>{{ um }}</h3>
+{% for message in get_flashed_messages() %}
+    <h3>{{ message }}</h3>
+{% endfor %}
 <div class="pull-right">
-    <a href="{{ url_for('.login') }}">登陆</a>
+    {# if not session.get('uid') 为什么行不通 #}
+    {# if not session.uid 为什么行不通 #}
+    {% if session.uid is undefined %}
+        <a href="{{ url_for('.login') }}">登陆</a>
+    {% else %}
+        <a href="{{ url_for('.logout') }}">退出</a>
+    {% endif %}
     <a href="{{ url_for('.register') }}">注册</a>
-    <a href="{{ url_for('.logout') }}">退出</a>
 </div>
 
 <img src="static/img/doge.gif">

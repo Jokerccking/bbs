@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <h1>Welcome to The Login Page!</h1>
-<form class="form-horizontal" method="post" action="{{ url_for('.login') }}">
+    <form class="form-horizontal" method="post" action="{{ url_for('.login') }}">
         <div class="control-group">
             <label class="control-label">用户名</label>
             <div class="controls">
@@ -22,4 +22,8 @@
             <input type="submit" class="span-primary" value="登录">
         </div>
     </form>
+{% for message in get_flashed_messages() %}
+    <span class="error" style="color: red">{{ message }}</span>
+{% endfor %}
+
 {% endblock %}

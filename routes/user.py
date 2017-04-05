@@ -35,8 +35,6 @@
 # 5，美化页面
 
 # 6，交互细节
-
-
 from flask import (
     render_template,
     request,
@@ -44,21 +42,17 @@ from flask import (
     session,
     url_for,
     Blueprint,
+    flash,
 )
 
 from models.user import User
-from routes import current_user
 
 main = Blueprint('index', __name__)
 
 
 @main.route('/')
 def index():
-    u = current_user()
-    um = '游客'
-    if u is not None:
-        um = "欢迎你，{}！".format(u.username)
-    return render_template('index.html', um=um)
+    return render_template('index.html')
 
 
 @main.route('/login', methods=['POST', 'GET'])
@@ -66,9 +60,13 @@ def login():
     if request.method == 'POST':
         u = User.validate_login(request.form)
         if u is None:
+            flash('用户名或密码不正确，请重新登录！')
+            return render_template('login.html')
+        else:
+            session['uid'] = u.id
+            flash('登录成功！')
+            flash('欢迎你，{}!'.format(u.username))
             return redirect(url_for('.index'))
-        session['uid'] = u.id
-        return redirect(url_for('.index'))
     return render_template('login.html')
 
 
@@ -84,8 +82,6 @@ def register():
 
 @main.route('/logout')
 def logout():
-    u = current_user()
-    if u is None:
-        return redirect('.index')
-    session.pop('uid')
+    session.pop('uid', None)
+    flash('注销成功！')
     return redirect(url_for('.index'))
