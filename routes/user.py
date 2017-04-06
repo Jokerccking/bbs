@@ -73,7 +73,7 @@ def login():
 @main.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
-        u = User.validate_register(request.form)
+        u = User.validate_register(request.form.copy())
         if u is None:
             return redirect(url_for('.index'))
         return redirect(url_for('.login'))

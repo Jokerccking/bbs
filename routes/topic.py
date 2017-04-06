@@ -8,8 +8,7 @@ from flask import redirect
 from flask import url_for
 
 from models.board import Board
-from models.topic import Topic
-from models.user import User
+from models.topic import Topic, Reply
 from routes import current_user, csrf_tokens
 
 main = Blueprint('topic', __name__)
@@ -35,16 +34,15 @@ def ball(bid):
     token = str(uuid.uuid4())
     csrf_tokens[token] = u.id
     bs = Board.all()
-    ts = Topic.get_all(bid)
+    ts = Topic.find_all({'bid': bid})
     return render_template('topic/index.html', ts=ts, bs=bs, token=token)
 
 
 @main.route('/detail/<int:tid>')
 def detail(tid):
     t = Topic.get(tid)
-    u = User.find(t.uid)
     b = Board.find(t.bid)
-    return render_template('topic/topic.html', topic=t, user=u, board=b)
+    return render_template('topic/topic.html', topic=t, board=b)
 
 
 @main.route('/new')
@@ -70,7 +68,7 @@ def delete(tid, token):
         csrf_tokens.pop(token)
         topic = Topic.find(tid)
         if u.id == topic.uid or u.role == 1:
-            Topic.pop(tid)
+            topic.remove()
             return redirect(url_for('.index'))
         else:
             abort(403)

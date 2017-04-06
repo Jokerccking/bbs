@@ -7,18 +7,15 @@ class Topic(Model):
     @classmethod
     def get(cls, i):
         t = cls.find(i)
-        t.view_times += 1
-        t.save()
+        if t is not None:
+            inc = {'$inc': {'view_times': 1}}
+            t.update(inc)
         return t
 
     @classmethod
-    def get_all(cls, bid):
-        tps = []
-        ms = cls.all()
-        for m in ms:
-            if m.bid == bid:
-                tps.append(m)
-        return tps
+    def all_of_user(cls, uid):
+        query = {'uid': uid}
+        return cls.find_all(query)
 
     def __init__(self, form):
         self.id = form.get('id')
@@ -29,19 +26,27 @@ class Topic(Model):
         self.content = form.get('content', '')
         self.ct = form.get('ct', int(time.time()))
 
+    def remove(self):
+        self.delete({'id': self.id})
+
+    def user(self):
+        from .user import User
+        return User.find(self.uid)
+
     def replies(self):
-        return Reply.all_rep(self.id)
+        return Reply.all_of_topic(self.id)
 
 
 class Reply(Model):
     @classmethod
-    def all_rep(cls, tid):
-        rs = []
-        ms = cls.all()
-        for m in ms:
-            if m.tid == tid:
-                rs.append(m)
-        return rs
+    def all_of_topic(cls, tid):
+        query = {'tid': tid}
+        return cls.find_all(query)
+
+    @classmethod
+    def all_of_user(cls, uid):
+        query = {'uid': uid}
+        return cls.find_all(query)
 
     def __init__(self, form):
         self.id = form.get('id')
@@ -49,3 +54,10 @@ class Reply(Model):
         self.tid = int(form.get('tid'))
         self.content = form.get('content', '')
         self.ct = form.get('ct', int(time.time()))
+
+    def user(self):
+        from .user import User
+        return User.find(self.uid)
+
+    def topic(self):
+        return Topic.find(self.tid)

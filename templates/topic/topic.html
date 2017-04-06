@@ -19,7 +19,7 @@
                     </span>
                     <span>
                         作者
-                        <a href="">{{ user.username }}</a>
+                        <a href="">{{ topic.user().username }}</a>
         	        </span>
                     <span>
                         {{ topic.view_times }} 次浏览
@@ -50,12 +50,12 @@
         {% for r in topic.replies() %}
         <div class='cell reply_area reply_item'>
             <div class='author_content'>
-                <a href="/user/leiwei1991" class="user_avatar">
-                    <img src="" title="{{ user.username }}"/>
+                <a href="" class="user_avatar">
+                    <img src="" title="{{ r.user().username }}"/>
                 </a>
                 <div class='user_info'>
                     <a class='dark reply_author'>
-                        {{ user.username }}
+                        {{ r.user().username }}
                     </a>
                     <a class="reply_time">
                         {{ loop.index }}楼 • 2 天前

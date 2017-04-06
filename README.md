@@ -6,3 +6,10 @@
 * 增加了board权限验证
 * 修复 topic 详情页面的作者链接和板块链接
 * 增加了 topic 删除权限验证
+
+## Ver2.0
+
+* 连接数据库(MongoDB)
+* 重写Model，部分routes，template
+* todo： 头像，时间，
+* 性能待优化

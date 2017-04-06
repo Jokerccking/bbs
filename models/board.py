@@ -12,7 +12,5 @@ class Board(Model):
 
     def remove(self):
         from .topic import Topic
-        ts = Topic.get_all(self.id)
-        for t in ts:
-            Topic.pop(t.id)
-        self.pop(self.id)
+        Topic.delete({'bid': self.id})
+        self.delete({'id': self.id})

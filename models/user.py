@@ -23,18 +23,17 @@ class User(Model):
 
     @classmethod
     def validate_register(cls, form):
+        form['password'] = cls.salted_password(form.get('password'))
         ur = cls(form)
         us = cls.all()
-        ur.password = cls.salted_password(ur.password)
         if len(ur.username) > 2:
             for u in us:
                 if u.username == ur.username:
                     return None
-        new_user = ur.save()
+        new_user = cls.new(form)
         return new_user
 
     def __init__(self, form):
-        # super(Model, self).__init__()
         self.id = form.get('id')
         self.username = form.get('username', '')
         self.password = form.get('password', '')
