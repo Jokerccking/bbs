@@ -1,0 +1,31 @@
+{% extends "mail/basic.html" %}
+{% block title %}Mail Index Page{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+
+<h1>Welcome to The Mail Page!</h1>
+<p>{{ user.username }}的邮件箱</p>
+<div>
+    <h3>收件箱：</h3>
+    {% for m in user.received_mails() %}
+    <div>From:
+        <a href="{{ url_for('index.individual', uid=m.sender().id) }}">{{ m.sender().username }}</a>
+        @ {{ m.ct }}
+    </div>
+    <div>{{ m.title }}</div>
+    <div>{{ m.content }}</div><br><br>
+    {% endfor %}
+</div>
+<hr>
+<div>
+    <h3>发件箱：</h3>
+    {% for m in user.send_mails() %}
+    <div> TO: {{ m.receiver().username }}@ {{ m.ct }} </div>
+    <div>{{ m.title }}</div>
+    <div>{{ m.content }}</div>
+    <br>
+    {% endfor %}
+</div>
+{% endblock %}

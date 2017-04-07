@@ -16,12 +16,17 @@
     {% else %}
         <a href="{{ url_for('.logout') }}">退出</a>
     {% endif %}
-    <a href="{{ url_for('.register') }}">注册</a>
+    <a href="{{ url_for('.register') }}">注册</a><br>
 </div>
 
 <img src="static/img/doge.gif">
 <img src="static/img/doge1.jpg">
-<img src="static/img/doge2.gif">
+<img src="static/img/doge2.gif"><br>
+{% if session.uid is not undefined %}
+    <a href="{{ url_for('.profile')}}">My Profile</a><br>
+    <a href="{{ url_for('.individual', uid=session.uid) }}">My Home Page</a><br>
+    <a href="{{ url_for('mail.index') }}">My Mail</a>
+{% endif %}
 <h3>App List:</h3>
 <a href="/topic">Topic</a><br>
 {% endblock %}

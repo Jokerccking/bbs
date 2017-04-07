@@ -1,0 +1,21 @@
+{% extends "basic.html" %}
+{% block title %}用户资料页面{% endblock %}
+{% block head%}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Welecom to User Profile Page</h1>
+    <div>
+        id: {{ user.id }}<br>
+        用户名： {{ user.username }}<br>
+        密码： {{ user.password }}<br>
+    </div>
+    <title>Upload new File</title>
+    <form method="post" action="{{ url_for('.upload_img') }}" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+    {% for message in get_flashed_messages() %}
+        <div style="color:Blue">{{ message }}</div>
+    {% endfor %}
+{% endblock %}

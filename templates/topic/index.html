@@ -35,6 +35,10 @@
                     {% for t in ts %}
                     <div class="cell">
                         <div class="topic_title_wrapper">
+                            <a class="user_avatar pull-left" href="{{ url_for('index.individual', uid=t.user().id) }}">
+                                 <img src="{{ url_for('index.load', filename=t.user().image) }}?v=3&s=120"
+                            title="atian25"/>
+                            </a>
                             <a class="topic_title" href="{{ url_for('.detail', tid=t.id) }}">
                                 {{ t.title }}
                             </a>

@@ -5,6 +5,7 @@ from routes.user import main as routes_user
 from routes.topic import main as routes_topic
 from routes.reply import main as routes_reply
 from routes.board import main as routes_board
+from routes.mail import main as routes_mail
 
 # 使用flask框架并加密session
 app = Flask(__name__)
@@ -15,6 +16,7 @@ app.register_blueprint(routes_user)
 app.register_blueprint(routes_topic, url_prefix='/topic')
 app.register_blueprint(routes_reply, url_prefix='/reply')
 app.register_blueprint(routes_board, url_prefix='/board')
+app.register_blueprint(routes_mail, url_prefix='/mail')
 
 if __name__ == '__main__':
     app.run(**hp)

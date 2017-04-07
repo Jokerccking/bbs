@@ -22,4 +22,8 @@
         <input type="submit" class="span-primary" value="注册">
     </div>
 </form>
+{% for message in get_flashed_messages() %}
+    {{ message }}
+{% endfor %}
+
 {% endblock %}

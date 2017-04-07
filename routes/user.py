@@ -35,6 +35,8 @@
 # 5，美化页面
 
 # 6，交互细节
+import os
+
 from flask import (
     render_template,
     request,
@@ -43,9 +45,12 @@ from flask import (
     url_for,
     Blueprint,
     flash,
+    send_from_directory,
+    abort,
 )
-
+from config.config import user_file_director
 from models.user import User
+from routes import current_user
 
 main = Blueprint('index', __name__)
 
@@ -75,7 +80,9 @@ def register():
     if request.method == 'POST':
         u = User.validate_register(request.form.copy())
         if u is None:
-            return redirect(url_for('.index'))
+            flash('注册失败！用户名已存在或密码长度小于2')
+            return redirect(url_for('.register'))
+        flash('注册成功！')
         return redirect(url_for('.login'))
     return render_template('register.html')
 
@@ -85,3 +92,43 @@ def logout():
     session.pop('uid', None)
     flash('注销成功！')
     return redirect(url_for('.index'))
+
+
+@main.route('/profile')
+def profile():
+    u = current_user()
+    return render_template('profile.html', user=u)
+
+
+def allow_file(filename):
+    suffix = filename.split('.')[-1]
+    from config.config import accepted_suffix
+    return suffix in accepted_suffix
+
+
+@main.route('/upload/img', methods=['POST'])
+def upload_img():
+    u = current_user()
+    if 'file' in request.files:
+        file = request.files['file']
+        if allow_file(file.filename):
+            from werkzeug.utils import secure_filename
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(user_file_director, filename))
+            u.image = filename
+            u.update({'$set': {'image': filename}})
+            flash('Upload Done!')
+    return redirect(url_for('.profile'))
+
+
+@main.route('/load/<filename>')
+def load(filename):
+    return send_from_directory(user_file_director, filename)
+
+
+@main.route('/individual/<int:uid>')
+def individual(uid):
+    user = User.find(uid)
+    if user is None:
+        abort(500)
+    return render_template('individual.html', user=user)

@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+{% block title %}{{ user.username}}的主页{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+
+    </style>
+{% endblock %}
+{% block content %}
+
+    <h1>{{ user.username }} 的主页</h1>
+    <a href="{{ url_for('mail.send', receiver_id=user.id) }}">发送私信</a>
+    <h2>topics:</h2>
+    {% for t in user.topics() %}
+        <div>
+            <a href="{{ url_for('topic.detail', tid=t.id) }}">{{ t.title }}</a>
+        </div>
+    {% endfor %}
+
+{% endblock %}

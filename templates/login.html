@@ -23,7 +23,7 @@
         </div>
     </form>
 {% for message in get_flashed_messages() %}
-    <span class="error" style="color: red">{{ message }}</span>
+    <span style="color: red">{{ message }}</span>
 {% endfor %}
 
 {% endblock %}

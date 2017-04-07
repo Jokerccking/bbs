@@ -13,8 +13,8 @@ class User(Model):
     def validate_login(cls, form):
         b = None
         ul = cls(form)
-        us = cls.all()
         ul.password = cls.salted_password(ul.password)
+        us = cls.find_all({})
         for u in us:
             if u.username == ul.username and u.password == ul.password:
                 b = u
@@ -25,7 +25,7 @@ class User(Model):
     def validate_register(cls, form):
         form['password'] = cls.salted_password(form.get('password'))
         ur = cls(form)
-        us = cls.all()
+        us = cls.find_all({})
         if len(ur.username) > 2:
             for u in us:
                 if u.username == ur.username:
@@ -38,3 +38,16 @@ class User(Model):
         self.username = form.get('username', '')
         self.password = form.get('password', '')
         self.role = form.get('role', 10)
+        self.image = form.get('image', 'default.gif')
+
+    def topics(self):
+        from .topic import Topic
+        return Topic.find_all({'uid': self.id})
+
+    def received_mails(self):
+        from .mail import Mail
+        return Mail.find_all({'receiver_id': self.id})
+
+    def send_mails(self):
+        from .mail import Mail
+        return Mail.find_all({'sender_id': self.id})
