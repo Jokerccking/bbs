@@ -8,7 +8,7 @@ from flask import redirect
 from flask import url_for
 
 from models.board import Board
-from models.topic import Topic, Reply
+from models.topic import Topic
 from routes import current_user, csrf_tokens
 
 main = Blueprint('topic', __name__)

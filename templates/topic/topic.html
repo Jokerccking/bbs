@@ -14,9 +14,7 @@
                     {{ topic.title }}
                 </span>
                 <div class="changes">
-                    <span>
-                        发布于 {{ topic.ct }}
-                    </span>
+                    发布于<span id="topic-ct">{{ topic.ct|local_time }}</span>
                     <span>
                         ||作者--
                         <a href="{{ url_for('index.individual', uid=topic.user().id) }}">{{ topic.user().username }}</a>
@@ -33,7 +31,7 @@
             <div class='inner topic'>
                 <div class='topic_content'>
                     <div class="markdown-text">
-                        {{ topic.content }}
+                        {{ markdown2.markdown(topic.content)|safe }}
                     </div>
                 </div>
             </div>
@@ -58,7 +56,7 @@
                         {{ r.user().username }}
                     </a>
                     <span class="reply_time">
-                        {{ loop.index }}楼 @ {{ r.ct }}
+                        {{ loop.index }}楼 @ {{ r.ct|delta }}
                     </span>
                 </div>
                 <div class='user_action'>
@@ -70,7 +68,7 @@
             </div>
             <div class='reply_content from-leiwei1991'>
                 <div class="markdown-text">
-                    {{ r.content }}
+                    {{ markdown2.markdown(r.content)|safe }}
                 </div>
             </div>
         </div>

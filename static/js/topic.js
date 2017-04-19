@@ -1,14 +1,21 @@
-var initedEditor = function() {
-    var e = new Editor()
-    var element = $('.editor').get(0)
-    e.render(element)
-    return e
+var timeConvert = function() {
+    var ele = e("#topic-ct")
+    timestamp = int(ele.innerHTML)
+    t = new Date(timestamp * 1000)
+    return t.toLocalTimeString()
+}
+
+var markString = function() {
+    var ele = e("#markdown-text");
+    b = ele.innerHTML;
+    ele.innerHTML = marked(b)
 }
 
 var __main = function() {
-    initedEditor()
+    timeConvert();
+    markString()
 }
 
 $(document).ready(function() {
-    __main()
+    __main();
 })

@@ -1,3 +1,4 @@
+import markdown2
 from flask import Flask
 
 from config.config import secret_key, hp
@@ -17,6 +18,35 @@ app.register_blueprint(routes_topic, url_prefix='/topic')
 app.register_blueprint(routes_reply, url_prefix='/reply')
 app.register_blueprint(routes_board, url_prefix='/board')
 app.register_blueprint(routes_mail, url_prefix='/mail')
+
+
+@app.context_processor
+def include_markdown():
+    return {'markdown2': markdown2}
+
+
+@app.template_filter('delta')
+def time_delta(utime):
+    import datetime
+    now = datetime.datetime.now()
+    ct = datetime.datetime.fromtimestamp(utime)
+    delta = now - ct
+    if delta.days != 0:
+        return str(delta.days) + 'days ago'
+    else:
+        sec = delta.seconds
+        if sec < 60:
+            return str(sec) + 'seconds ago'
+        elif sec < 3600:
+            return str(sec//60) + 'minuts ago'
+        else:
+            return str(sec//3600) + 'hours ago'
+
+
+@app.template_filter('local_time')
+def time_convert(ct):
+    import time
+    return time.strftime('%Y/%m/%d', time.localtime(int(ct)))
 
 if __name__ == '__main__':
     app.run(**hp)
