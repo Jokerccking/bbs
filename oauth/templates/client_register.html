@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <form action="{{ url_for('.client_register') }}" method="post">
+        <input name="appname" placeholder="请输入app名称" />
+        <input name="redirect_uri" placeholder="请输入重定向URI"/>
+        <input type="submit" value="提交" />
+    </form>
+</body>
+</html>

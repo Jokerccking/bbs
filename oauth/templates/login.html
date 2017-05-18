@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <form action="/oauth" method="post">
+        <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
+        <input name="user" />
+        <input name="pwd" />
+        <input type="submit" value="确认授权" />
+    </form>
+</body>
+</html>
