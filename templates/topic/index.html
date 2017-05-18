@@ -52,10 +52,10 @@
         </div>
     </div>
 </div>
-    {% endblock %}
-    {% block script %}
+{% endblock %}
+{% block script %}
     (function () {
-    var editor = new Editor();
-    editor.render($('.editor')[0]);
+        var editor = new Editor();
+        editor.render($('.editor')[0]);
     })();
-    {% endblock %}
+{% endblock %}

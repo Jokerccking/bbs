@@ -1,5 +1,5 @@
 import markdown2
-from flask import Flask
+from flask import Flask, request, redirect
 
 from config.config import secret_key, hp
 from routes.user import main as routes_user
@@ -18,6 +18,13 @@ app.register_blueprint(routes_topic, url_prefix='/topic')
 app.register_blueprint(routes_reply, url_prefix='/reply')
 app.register_blueprint(routes_board, url_prefix='/board')
 app.register_blueprint(routes_mail, url_prefix='/mail')
+
+
+@app.route('/authorization')
+def authorization():
+    code = request.args.get('code')
+    uri = 'http://localhost:9001/oauth?grant_type=authorization_code&code={}&redirect_uri=http://localhost:2000/authorization&client_id=c3baa566-eef2-4dc4-80bb-bc2026147ae1'.format(code)
+    return redirect(uri)
 
 
 @app.context_processor
@@ -48,5 +55,20 @@ def time_convert(ct):
     import time
     return time.strftime('%Y/%m/%d', time.localtime(int(ct)))
 
+
+def configure_log(app):
+    """
+    把错误输出到log日志
+    :param app:
+    :return:
+    """
+    if not app.debug:
+        import logging
+        stream_handler = logging.StreamHandler()
+        stream_handler.setLevel(logging.INFO)
+        app.logger.addHandler(stream_handler)
+
+
 if __name__ == '__main__':
+    configure_log(app)
     app.run(**hp)

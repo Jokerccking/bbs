@@ -55,7 +55,7 @@ from routes import current_user
 main = Blueprint('index', __name__)
 
 
-@main.route('/')
+@main.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
 
