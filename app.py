@@ -22,6 +22,10 @@ app.register_blueprint(routes_mail, url_prefix='/mail')
 
 @app.route('/authorization')
 def authorization():
+    """
+    客户端凭借code和URI获取 令牌
+    :return:
+    """
     code = request.args.get('code')
     uri = 'http://localhost:9001/oauth?grant_type=authorization_code&code={}&redirect_uri=http://localhost:2000/authorization&client_id=c3baa566-eef2-4dc4-80bb-bc2026147ae1'.format(code)
     return redirect(uri)
